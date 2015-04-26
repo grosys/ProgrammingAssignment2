@@ -13,7 +13,8 @@ makeCacheMatrix <- function(oldMat = matrix()) {
         invMat <<- NULL
     }
     get <- function() oldMat      
-    setInv <- function(solve) invMat <<- solve
+    setInv <- function(solve) invMat <<- solve  ## called fcn drops invMat
+                                                ## in this environment
     getInv <- function() invMat   ## hopefully gives cached inverse
     list(set = set, get = get,
         setInv = setInv,
@@ -31,7 +32,7 @@ cacheSolve <- function(x, ...) {
       return(invMat)
     }
   data <- x$get()
-  invMat <- solve(data, ...)
-  x$setInv(invMat)
+  invMat <- solve(data, ...)      ## here's the money step Inv compute
+  x$setInv(invMat)                ## Use of fcn from Cmatrix list object
   invMat
 }
